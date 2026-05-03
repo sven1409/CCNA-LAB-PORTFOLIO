@@ -1,12 +1,14 @@
-## 📂 Folder 01: Network Fundamentals
-This folder contains my foundational labs focused on the physical and logical layers of networking.
+# 01: Network Fundamentals 🌐
+This folder contains my first hands-on lab covering basic router configuration and IPv4 addressing.
 
-### Labs included:
-1. **Initial Device Setup:** Configuring basic security and management on Cisco ISR 4000 routers.
-2. **VLSM Subnetting:** Designing an efficient IP scheme for a 3-department office.
-3. **Layer 2 Discovery:** Using CDP and LLDP to map out a neighbor network.
+### 📍 Topology Diagram
+![Network Map](network-topology.png)
 
-### Skills Demonstrated:
-- Command Line Interface (CLI) navigation.
-- IPv4/IPv6 Addressing.
-- Troubleshooting connectivity using Ping and Traceroute.
+### 📄 Lab Documentation
+* **Packet Tracer File:** [MYFirstLab.pkt](./MYFirstLab.pkt)
+* **Verification Logs:** [r1-config-verification.txt](./r1-config-verification.txt)
+
+### 🛠️ Config Highlights:
+* Configured Hostname: **R1**
+* Interface G0/0/0: **10.0.0.62/26**
+* Verified connectivity using `show ip interface brief`.
