@@ -2,7 +2,7 @@
 This folder contains my first hands-on lab covering basic router configuration and IPv4 addressing.
 
 ### 📍 Topology Diagram
-![Network Map](network-topology.png)
+![Network Map](network-topology.png) ](network-topology.png)
 
 ### 📄 Lab Documentation
 * **Packet Tracer File:** [MYFirstLab.pkt](./MYFirstLab.pkt)
