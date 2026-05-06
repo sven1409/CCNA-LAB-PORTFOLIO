@@ -1,0 +1,137 @@
+=====================================================
+LAB 02: INTER-VLAN ROUTING (ROUTER-ON-A-STICK)
+=====================================================
+TOPOLOGY SUMMARY:
+R1 (G0/0) -> Connected to SW2 (G0/2)
+SW2 (G0/1) -> Connected to SW1 (G0/1)
+SW1 -> Hosts HR (V10) and GUEST (V20)
+SW2 -> Hosts SALES (V30)
+
+=====================================================
+DEVICE: R1 (SINGLE-ARM GATEWAY)
+=====================================================
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 10.0.0.1 255.255.255.192
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 10.0.0.65 255.255.255.192
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 10.0.0.129 255.255.255.192
+
+=====================================================
+DEVICE: SW1 (HR & GUEST)
+=====================================================
+! --- VLAN Database ---
+vlan 10
+ name HR
+vlan 20
+ name GUEST
+vlan 30
+ name SALES
+
+! --- Trunk to SW2 ---
+interface GigabitEthernet0/1
+ switchport mode trunk
+
+! --- Access Ports ---
+interface range f0/1-2
+ switchport mode access
+ switchport access vlan 10
+!
+interface range f0/3-4
+ switchport mode access
+ switchport access vlan 20
+
+=====================================================
+DEVICE: SW2 (SALES & TRANSIT)
+=====================================================
+! --- VLAN Database (Critical for traffic transit) ---
+vlan 10
+vlan 20
+vlan 30
+ name SALES
+
+! --- Trunks to R1 (G0/2) and SW1 (G0/1) ---
+interface range g0/1-2
+ switchport mode trunk
+
+! --- Access Ports ---
+interface range f0/1-2
+ switchport mode access
+ switchport access vlan 30
+
+=====================================================
+VERIFICATION (PROOFS)
+=====================================================
+SW1# show interface trunk
+(SW1(config)#DO SH INT TRUNK
+Port        Mode         Encapsulation  Status        Native vlan
+Gig0/1      on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gig0/1      10,20,30
+
+Port        Vlans allowed and active in management domain
+Gig0/1      10,20,30
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Gig0/1      10,20,30)
+
+SW2# show interface trunk
+(SW2(config)#DO SH INT TRUNK
+Port        Mode         Encapsulation  Status        Native vlan
+Gig0/1      on           802.1q         trunking      99
+Gig0/2      on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gig0/1      10,20,30
+Gig0/2      1-1005
+
+Port        Vlans allowed and active in management domain
+Gig0/1      10,20,30
+Gig0/2      1,10,20,30,99
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Gig0/1      10,20,30
+Gig0/2      1,10,20,30,99
+
+
+PC-HR (SW1) > ping 10.0.0.130 (PC-SALES on SW2)
+Cisco Packet Tracer PC Command Line 1.0
+C:\>PING 10.0.0.130
+
+Pinging 10.0.0.130 with 32 bytes of data:
+
+Reply from 10.0.0.130: bytes=32 time<1ms TTL=127
+Reply from 10.0.0.130: bytes=32 time<1ms TTL=127
+Reply from 10.0.0.130: bytes=32 time=15ms TTL=127
+Reply from 10.0.0.130: bytes=32 time<1ms TTL=127
+
+Ping statistics for 10.0.0.130:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 15ms, Average = 3ms
+
+
+PC-GUEST (SW1) > ping 10.0.0.190 (R1 Gateway)
+
+Cisco Packet Tracer PC Command Line 1.0
+C:\>PING 10.0.0.190
+
+Pinging 10.0.0.190 with 32 bytes of data:
+
+Reply from 10.0.0.190: bytes=32 time<1ms TTL=255
+Reply from 10.0.0.190: bytes=32 time=1ms TTL=255
+Reply from 10.0.0.190: bytes=32 time=1ms TTL=255
+Reply from 10.0.0.190: bytes=32 time<1ms TTL=255
+
+Ping statistics for 10.0.0.190:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+=====================================================
