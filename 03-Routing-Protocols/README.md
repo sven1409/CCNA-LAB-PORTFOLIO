@@ -4,7 +4,7 @@
 This deployment showcases a secure, redundant multi-site enterprise network layout. It implements Layer 2 segmentation using 802.1Q VLANs, deterministic spanning-tree path optimization to eliminate suboptimal traffic detours, and dynamic multi-subnet routing between sites using Single-Area OSPF (Area 0).
 
 ## 🗺️ Network Topology
-![Topology OSPF.png]
+! Topology OSPF.png
 
 ## 🛠️ Design Objectives & Implementations
 
