@@ -1,0 +1,63 @@
+#Verification Data
+
+### 1. EtherChannel verification
+
+Switch(config)#do sh etherchannel summary
+Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+----------------------------------------------
+
+1      Po1(RU)           LACP   Gig1/3(P) Gig1/4(P) 
+
+
+-------------------------------------------------------------------------------
+
+
+###2.Proof of interface ip and operational status
+Switch(config)#do sh ip int br
+Interface              IP-Address      OK? Method Status                Protocol 
+Port-channel1          10.0.0.193      YES manual up                    up 
+GigabitEthernet1/1     unassigned      YES unset  down                  down 
+GigabitEthernet1/2     unassigned      YES unset  down                  down 
+GigabitEthernet1/3     unassigned      YES unset  up                    up 
+GigabitEthernet1/4     unassigned      YES unset  up                    up 
+GigabitEthernet1/5     unassigned      YES unset  up                    up 
+GigabitEthernet1/6     unassigned      YES unset  up                    up 
+GigabitEthernet1/7     unassigned      YES unset  down                  down 
+GigabitEthernet1/8     unassigned      YES unset  down                  down 
+GigabitEthernet1/9     unassigned      YES unset  down                  down 
+GigabitEthernet1/10    unassigned      YES unset  down                  down 
+Vlan1                  unassigned      YES unset  administratively down down 
+Vlan10                 10.0.0.62       YES manual up                    up 
+Vlan20                 10.0.0.126      YES manual up                    up
+-------------------------------------------------------------------------------------
+
+
+
+###3.Proof of END-TO-END Routing
+
+C:\>ping 10.0.0.194
+Switch(config)#do ping 10.0.0.194
+
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.0.0.194, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/1 ms
+
+===========================================================================================
+
+
+
+
