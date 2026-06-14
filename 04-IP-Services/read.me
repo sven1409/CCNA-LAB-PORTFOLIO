@@ -1,0 +1,45 @@
+# Micro-Lab: Multi-VLAN Inter-VLAN Routing & Dynamic DHCP Deployment
+
+## 📌 Project Overview
+This micro-lab demonstrates the implementation of a segmented local area network (LAN) using Layer 2 VLAN partitioning, Variable Length Subnet Masking (VLSM) using a `/26` boundary, and automated IP addressing via a Cisco IOS Router configured as a centralized DHCP server. Inter-VLAN traffic routing is achieved using a Router-on-a-Stick (RoaS) topology.
+
+---
+
+## 🗺️ Topology Diagram
+![DHCP Topology]
+**
+
+---
+
+## 📊 Subnet & Addressing Table
+
+| Device | Interface / VLAN | IP Address | Subnet Mask | Default Gateway | Purpose / Description |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Router** | G0/0.10 | 10.0.0.62 | 255.255.255.192 | N/A | Default Gateway for VLAN 10 |
+| **Router** | G0/0.20 | 10.0.0.126 | 255.255.255.192 | N/A | Default Gateway for VLAN 20 |
+| **Router** | G0/0.30 | 10.0.0.190 | 255.255.255.192 | N/A | Default Gateway for VLAN 30 |
+| **PC-VLAN10** | NIC | *DHCP Assigned* | 255.255.255.192 | 10.0.0.62  |
+| **PC-VLAN20** | NIC | *DHCP Assigned* | 255.255.255.192 | 10.0.0.126 |
+| **PC-VLAN30** | NIC | *DHCP Assigned* | 255.255.255.192 | 10.0.0.190 | 
+
+---
+
+## 🛠️ Key Configuration Snippets
+
+### 1. Router DHCP Pool Configuration
+```router
+ip dhcp excluded-address 10.0.0.62
+ip dhcp excluded-address 10.0.0.126
+ip dhcp excluded-address 10.0.0.190
+
+ip dhcp pool VLAN10
+ network 10.0.0.0 255.255.255.192
+ default-router 10.0.0.62
+!
+ip dhcp pool VLAN20
+ network 10.0.0.64 255.255.255.192
+ default-router 10.0.0.126
+!
+ip dhcp pool VLAN30
+ network 10.0.0.128 255.255.255.192
+ default-router 10.0.0.190
